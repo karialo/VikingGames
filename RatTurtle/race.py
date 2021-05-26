@@ -1,24 +1,9 @@
 #!/usr/bin/python3
 # https://pastebin.com/pKTtgvYk
-
 import random
 import time
 import os
-
-
-class Animal:
-    def __init__(self, name, min, max):
-        self.name = name
-        self.min = min
-        self.max = max
-        self.position = ""
-        self.score = 0
-        self.victory = False
-
-    def go(self):
-        character = "|"
-        for i in range(random.randint(self.min, self.max)):
-            self.position = self.position + character
+from animal import Animal
 
 
 def clear():
@@ -71,19 +56,32 @@ def go():
 
     while (turtle.victory == False) and (rabbit.victory == False):
         sleep_chance = random.randint(1, 100)
-        if sleep_chance > 80:
+        if sleep_chance > 20:
+            # rabbit doesn't sleep
             rabbit.go()
             turtle.go()
+            time.sleep(0.01)
+            update()
         else:
-            turtle.go()
+            for i in range(random.randint(20, 40)):
+                turtle.go()
+                time.sleep(0.01)
+                update()
+                if len(turtle.position) >= 100:
+                    turtle.position = "|" * 100
+                    update()
+                    break
 
-        update()
-
-        if (len(turtle.position) >= 100):
+        if len(turtle.position) >= 100:
+            turtle.position = "|" * 100
+            update()
             add_point(turtle)
             input(f"Turtle wins round {curr_round}.\n\n")
             break
-        if (len(rabbit.position) >= 100):
+
+        if len(rabbit.position) >= 100:
+            rabbit.position = "|" * 100
+            update()
             add_point(rabbit)
             input(f"Rabbit wins round {curr_round}\n\n")
             break
